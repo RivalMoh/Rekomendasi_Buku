@@ -145,7 +145,6 @@ hasil dari algoritma ini adalah sebagai berikut:
 dari hasil diatas terlihat bahwa sistem dapat memberikan rekomendasi buku yang memiliki kemiripan dengan buku yang lainnya, dalam hasil tersebut juga ditampilkan angka kecocokan setiap hasil buku dengan buku yang di inputkan.
 
 2. SVD = algoritma ini bekerja dengan memecah sebuah matrix menjadi 3 komponen yang lebih sederhana, kelebihan dari algoritma ini adalah membantu menyederhanakan dataset yang lebih besar menjadi dataset yang lebih kecil sambil mempertahankan informasi penting yang ada hal ini dapat membantu dalam menangkap hubungan tersembunyi antar data khususnya pada data user dan buku, cocok untuk dataset yang berukuran besar dan dapat menghasilkan hasil akurasi yang tinggi. kekurangan dari algoritma ini adalah kompleksitas yang tinggi, tidak dapat menangani cold start untuk user baru, dan sensitif terhadap parameter.
-
 hasil dari algoritma ini adalah sebagai berikut:
 <img width="379" alt="image4" src="https://github.com/user-attachments/assets/0c0f9de6-a012-4e86-a112-e4ea1c4520f6" />
 
