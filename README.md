@@ -97,13 +97,14 @@ Dalam tahapan ini diperiksa untuk setiap file yang ada yaitu melalui pengecekan 
   - Jumlah data duplikat: 0
 2. ratings.csv:
   pada file ini data yang dimiliki lengkap dan tidak ada data yang duplikat. hal ini menunjukkan data yang baik dengan persebaran rating data 1-10 dengan hasil visualisasi sebagai berikut:
-  ![Visualisasi rating](image.png)
+![image](https://github.com/user-attachments/assets/8dee7a37-3403-42cd-96fa-bb1c481b897c)
+
   dari hasil diatas terlihat bahwa mayoritas data memiliki rating 0 dan hanya sebagian kecil yang memiliki rating lebih dari 0 yang memberikan sebuah kesimpulan bahwa data yang digunakan untuk membuat sistem rekomendasi buku ini hanya sebagian kecil data saja.
 3. users.csv:
   pada file users.csv terdapat data yang hilang pada beberapa kolom seperti Age dengan jumlah data hilang sebanyak 110762. data yang hilang dari kolom tersebut akan diisi dengan dengan rata-rata umur pengguna. dari hal tersebut didapatkan visualiasasi sebagai berikut:
-  ![Visualisasi umur](image1.png)
+  ![image1](https://github.com/user-attachments/assets/ee2f9a4b-da54-4338-99df-080af3c5053f)
   terlihat dari viualisasi tersebut bahwa mayoritas umur pengguna adalah 30-40 tahun. dengan persebaran negara pengguna adalah sebagai berikut:
-  ![Visualisasi negara](image2.png)
+  ![image2](https://github.com/user-attachments/assets/a7478a86-d8ae-4b88-9f30-2b8df0f3ecb4)
   terlihat bahwa mayoritas pengguna berasal dari negara Amerika Serikat/USA dan dengan 5 negara lainnya yaitu Canada, United Kingdom, Germany, dan Spain.
 
 ## Data Preparation
@@ -139,14 +140,14 @@ Terdapat 2 algoritma yang saya gunakan dalam membuat sistem rekomendasi buku ini
 1. Cosine Similarity = algoritma ini bekerja dengan menghitung sudut antara 2 vektor yang berbeda, dalam projek ini maka yang digitung adalah kemiripan vektor dari rating yang diterima satu buku dengan buku lainnya dari setiap user. kemiripan vektor ini kemudian dijadikan sebagai input untuk membuat sistem rekomendasi buku ini. kelebihan dari algoritma ini adalah mudah dipahami dan diimplementasikan, tidak terpengaruh oleh skala rating, cocok untuk data sparse dimana data yang digunakan tidak banyak yang kosong atau memberikan rating 0, dan cocok untuk jumlah data dari kecil sampai sedang. namun, kekurangannya adalah kurang efektif untuk data yang ratingnya hanya di sebagian item saja atau sparse, sensitif terhadap outlier, dan dapat menjadi masalah jika data yang digunakan sangat besar.
 
 hasil dari algoritma ini adalah sebagai berikut:
-![Visualisasi Hasil Algoritma Cosine Similarity](image3.png)
+<img width="766" alt="image3" src="https://github.com/user-attachments/assets/84312bd3-374f-4e1d-85ba-1ca8ccaf4a3e" />
 
 dari hasil diatas terlihat bahwa sistem dapat memberikan rekomendasi buku yang memiliki kemiripan dengan buku yang lainnya, dalam hasil tersebut juga ditampilkan angka kecocokan setiap hasil buku dengan buku yang di inputkan.
 
 2. SVD = algoritma ini bekerja dengan memecah sebuah matrix menjadi 3 komponen yang lebih sederhana, kelebihan dari algoritma ini adalah membantu menyederhanakan dataset yang lebih besar menjadi dataset yang lebih kecil sambil mempertahankan informasi penting yang ada hal ini dapat membantu dalam menangkap hubungan tersembunyi antar data khususnya pada data user dan buku, cocok untuk dataset yang berukuran besar dan dapat menghasilkan hasil akurasi yang tinggi. kekurangan dari algoritma ini adalah kompleksitas yang tinggi, tidak dapat menangani cold start untuk user baru, dan sensitif terhadap parameter.
 
 hasil dari algoritma ini adalah sebagai berikut:
-![Visualisasi Hasil Algoritma SVD](image4.png) 
+<img width="379" alt="image4" src="https://github.com/user-attachments/assets/0c0f9de6-a012-4e86-a112-e4ea1c4520f6" />
 
 hasil diatas menggunakan algoritma svd yang dimana parameter yang digunakan masih default atau bawaan dan belum diubah sama sekali. hasil tersebut menunjukkan rekomendasi yang didapatkan dengan memberikan informasi User-ID yang selanjutnya rekomendasi tersebut keluar dengan nama buku dan prediksi dari ratingnya.
 
