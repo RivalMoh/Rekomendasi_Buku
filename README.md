@@ -111,13 +111,13 @@ Dalam tahapan ini diperiksa untuk setiap file yang ada yaitu melalui pengecekan 
 Pada bagian data preparation dalam projek ini dilakukan dalam beberapa tahapan, yaitu:
 1. Menggabungkan data buku dan rating melalui kolom ISBN -> dilakukan penggabungan data buku dan rating ini guna untuk menyatukkan user dan buku apa saja yang dibaca oleh user tersebut dengan penggabungan data melalu kolom ISBN. penggabungan dilakukakn dengan menggunakan fungsi pd.merge dengan parameter on='ISBN'.
 
-2. Mencari tahu berapa banyak sebuah buku dibaca melalui banyak jumlah rating yang diberikan oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.value_counts untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung jumlah rating yang diberikan oleh user untuk setiap buku dengan fungsi 'count' dan hasil tersebut akan dalam kolom 'count'. hal ini bertujuan untuk mengetahui berapa kali buku dibaca oleh user.
+2. Membuat tabel yang berisi jumlah yang membaca sebuah buku oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.value_counts untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung jumlah rating yang diberikan oleh user untuk setiap buku dengan fungsi 'count' dan hasil tersebut akan dalam kolom 'count'. hal ini bertujuan untuk mengetahui berapa kali buku dibaca oleh user.
 
-3. Mencari tahu rata-rata rating sebuah buku melalui rata-rata rating yang diberikan oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.groupby untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung rata-rata rating untuk setiap buku dengan fungsi 'mean'. hasilnya akan dalam kolom 'mean'. hal tersebut dilakukan untuk mengetahui rata-rata rating yang didapat untuk setiap buku.
+3. Membuat tabel rata-rata rating pada setiap buku yang ada melalui rata-rata rating yang diberikan oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.groupby untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung rata-rata rating untuk setiap buku dengan fungsi 'mean'. hasilnya akan dalam kolom 'mean'. hal tersebut dilakukan untuk mengetahui rata-rata rating yang didapat untuk setiap buku.
 
 4. Mengambil data buku dengan jumlah pembaca di atas 20 dan rata-rata rating di atas 4.5 -> setelah proses ke 3 dan 4 dilakukan akan menhasilkan data frame count dan mean. Dari dataframe tersebut akan digabungkan kembali dengan dataframe merge_df yang telah di gabungkan sebelumnya. karena tujuan awal adalah untuk mengetahui berapa banyak pembaca dari setiapa buku dan rata-rata rating dari setiap buku. kemudian akan di filter data yang jumlah pembaca di atas 20 dan rata-rata rating di atas 4.5 agar data yang kita gunakan data buku yang sudah pernah dibaca dan di rating oleh user untuk memudahkan data digunakan dalam algoritma rekomendasi nantinya. 
 
-setelah pemilihan buku mana saja yang akan digunakan untuk membuat sistem rekomendasi ini, maka akan digunakan untuk memfilter dataset merge_df yang telah di gabungkan sebelumnya dengan ketentuan judul yang sudah diambil pada tahapan ke-4. dari seluruh proses tersebut dihasilkan data yang dapat digunakan untuk membuat sistem rekomendasi buku adalah sebanyak 21993 baris dan 8 kolom didalamnya dengan kolom sebagai berikut:
+5. Melakukan Filter pada merge_df dengan data preparation yang dihasilkan dari tahapan ke-4 -> setelah pemilihan buku mana saja yang akan digunakan untuk membuat sistem rekomendasi ini pada tahapan ke-4, data yang dihasilkan akan digunakan untuk memfilter dataset merge_df yang telah di gabungkan sebelumnya dengan ketentuan judul, jadi jika judul buku tidak memunuhi kriteria pada tahapan ke-4 maka pada tahapan ke-5 akan tidak digunakan atau hanya menggunakan judul-judul yang ada pada data tahapan ke-4. setelah proses tersebut dihasilkan data dengan nama fix_dfyang dapat digunakan untuk membuat sistem rekomendasi buku adalah sebanyak 21993 baris dan 8 kolom didalamnya dengan kolom sebagai berikut:
 - ISBN = Nomor dari setiap buku yang berstandar internasional
 - Book-Title = Judul buku
 - Book-Author = Penulis buku
@@ -127,7 +127,9 @@ setelah pemilihan buku mana saja yang akan digunakan untuk membuat sistem rekome
 - Image-URL-M = url gambar kedua
 - Image-URL-L = url gambar ketiga
 
-Dari sekian banyak kolom yang dihasilkan,tetapi hanya bebrapa kolom saja yang akan digunakan untuk membuat sistem rekomendasi ini yaitu User-ID, Book-Tittle, dan Book-Rating. seluruh proses tersebut dilakukan agar data dapat diproses oleh algoritma cosine similarity nantinya.
+Dari sekian banyak kolom yang dihasilkan,tetapi hanya beberapa kolom saja yang akan digunakan untuk membuat sistem rekomendasi ini yaitu User-ID, Book-Tittle, dan Book-Rating.
+
+6. Membuat pivot table dari dataframe fix_df -> pada tahapan ini dilakukan pembuatan matrix dengan menggunakan fungsi pd.pivot_table dengan parameter index='Book-Title', columns='User-ID', values='Book-Rating'. yang berarti data akan diubah menjadi bentuk matrix dengan Book-Title sebagai baris, User-ID sebagai kolom, dan Book-Rating sebagai nilai. pada tahapan ini dilakukan agar data dipersiapkan agar dapat diproses oleh algoritma cosine similarity nantinya.
 
 ## Modeling
 Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
@@ -152,12 +154,21 @@ cara untuk Mendapatkan sebuah hasil rekomendasi buku dari kedua sistem buku ters
 
 ## Evaluation
 
-Metrik yang digunakan dalam projek ini adalah RMSE (Root Mean Squared Error). Metrik ini mengukur dengan cara mengakar kuadratkan hasil dari MSE memberikan interpretasi error dalam satuan yang sama dengan nilai aktual jadi kita dapat dengan mudah membandingkan error dengan satuan yang sama dengan data target.RMSE ini digunakan sebagai metrik evaluasi karena dapat memberikan nilai yang lebih akurat dan dapat memberikan gambaran tentang kesalahan yang terjadi dalam sistem rekomendasi buku. RMSE ini juga dapat memberikan gambaran tentang kesesuaian antara sistem rekomendasi buku dengan data yang sebenarnya. Rumus dari RMSE adalah sebagai berikut:
+Berdasarkan pernyataan masalah dan tujuan yang telah ditetapkan, proyek ini bertujuan untuk membangun sistem rekomendasi buku yang dapat memberikan rekomendasi sesuai dengan preferensi dan minat pengguna. Dua algoritma, yaitu Cosine Similarity dan SVD (Singular Value Decomposition), digunakan sebagai pendekatan utama dalam membangun sistem rekomendasi ini dengan menggunakan 3 fitur utama pada data, yaitu User-ID, Book-Title, dan Book-Rating.
+
+Untuk mengevaluasi kinerja sistem rekomendasi, digunakan metrik Root Mean Squared Error (RMSE). RMSE dipilih karena dapat memberikan gambaran yang jelas tentang tingkat kesalahan prediksi dalam satuan yang sama dengan data aktual, sehingga mempermudah interpretasi dan analisis kesesuaian hasil rekomendasi dengan data sebenarnya.
+
+Metrik ini dihitung dengan mengakar kuadrat rata-rata dari selisih kuadrat antara nilai aktual dan nilai prediksi. Dengan demikian, RMSE memberikan interpretasi error dalam satuan yang sama dengan data target, sehingga memudahkan untuk membandingkan tingkat kesalahan prediksi.
+
+RMSE digunakan sebagai metrik evaluasi dalam proyek ini karena mampu memberikan nilai yang akurat dan merepresentasikan tingkat kesalahan yang terjadi pada sistem rekomendasi buku. Selain itu, RMSE juga memberikan gambaran yang baik tentang sejauh mana hasil prediksi sistem rekomendasi sesuai dengan data sebenarnya. Rumus dari RMSE adalah sebagai berikut:
 
 $$RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^n(y_i - \hat{y_i})^2}$$
 
-hasil dari pengukuran dari Metrik tersebut adalah sebagai berikut:
-- RMSE model cosine similarity = 6.6217
-- RMSE model SVD = 3.5159
+Hasil evaluasi menunjukkan nilai RMSE sebagai berikut:
 
-dari hasil diatas dapat disimpulkan bahwa model SVD memiliki RMSE yang lebih kecil yang menunjukkan bahwa model SVD lebih akurat dalam memprediksi rating buku yang sesuai dengan rating yang sebenarnya dibandingkan dengan model cosine similarity.
+    Cosine Similarity: RMSE = 6.6217
+    SVD: RMSE = 3.5159
+
+Dari hasil evaluasi ini, dapat disimpulkan bahwa model SVD memiliki performa yang lebih baik dibandingkan dengan model Cosine Similarity dalam hal akurasi prediksi rating buku. Nilai RMSE yang lebih kecil pada model SVD menunjukkan bahwa model ini lebih akurat dalam merekomendasikan buku yang sesuai dengan preferensi dan minat pengguna.
+
+Dengan demikian, solusi menggunakan algoritma SVD lebih disarankan untuk diimplementasikan dalam sistem rekomendasi buku ini, mengingat tingkat kesalahan prediksinya yang lebih rendah dibandingkan dengan algoritma Cosine Similarity.
