@@ -97,27 +97,31 @@ Dalam tahapan ini diperiksa untuk setiap file yang ada yaitu melalui pengecekan 
   - Jumlah data duplikat: 0
 2. ratings.csv:
   pada file ini data yang dimiliki lengkap dan tidak ada data yang duplikat. hal ini menunjukkan data yang baik dengan persebaran rating data 1-10 dengan hasil visualisasi sebagai berikut:
-  ![Visualisasi rating](image.png)
+![image](https://github.com/user-attachments/assets/8dee7a37-3403-42cd-96fa-bb1c481b897c)
+
   dari hasil diatas terlihat bahwa mayoritas data memiliki rating 0 dan hanya sebagian kecil yang memiliki rating lebih dari 0 yang memberikan sebuah kesimpulan bahwa data yang digunakan untuk membuat sistem rekomendasi buku ini hanya sebagian kecil data saja.
 3. users.csv:
   pada file users.csv terdapat data yang hilang pada beberapa kolom seperti Age dengan jumlah data hilang sebanyak 110762. data yang hilang dari kolom tersebut akan diisi dengan dengan rata-rata umur pengguna. dari hal tersebut didapatkan visualiasasi sebagai berikut:
-  ![Visualisasi umur](image1.png)
+  ![image1](https://github.com/user-attachments/assets/ee2f9a4b-da54-4338-99df-080af3c5053f)
   terlihat dari viualisasi tersebut bahwa mayoritas umur pengguna adalah 30-40 tahun. dengan persebaran negara pengguna adalah sebagai berikut:
-  ![Visualisasi negara](image2.png)
+  ![image2](https://github.com/user-attachments/assets/a7478a86-d8ae-4b88-9f30-2b8df0f3ecb4)
   terlihat bahwa mayoritas pengguna berasal dari negara Amerika Serikat/USA dan dengan 5 negara lainnya yaitu Canada, United Kingdom, Germany, dan Spain.
 
 ## Data Preparation
 
 Pada bagian data preparation dalam projek ini dilakukan dalam beberapa tahapan, yaitu:
-1. Menggabungkan data buku dan rating melalui kolom ISBN -> dilakukan penggabungan data buku dan rating ini guna untuk menyatukkan user dan buku apa saja yang dibaca oleh user tersebut dengan penggabungan data melalu kolom ISBN. penggabungan dilakukakn dengan menggunakan fungsi pd.merge dengan parameter on='ISBN'.
+1. Mengisi kolom Age yang hilang dengan rata-rata umur -> hal ini dilakukan dengan menggunakan fungsi fillna dengan parameter value=mean untuk mengisi kolom Age yang hilang dengan rata-rata umur dari semua pengguna.
+2. Menggabungkan data buku dan rating melalui kolom ISBN -> dilakukan penggabungan data buku dan rating ini guna untuk menyatukkan user dan buku apa saja yang dibaca oleh user tersebut dengan penggabungan data melalu kolom ISBN. penggabungan dilakukakn dengan menggunakan fungsi pd.merge dengan parameter on='ISBN'.
 
-2. Membuat tabel yang berisi jumlah yang membaca sebuah buku oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.value_counts untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung jumlah rating yang diberikan oleh user untuk setiap buku dengan fungsi 'count' dan hasil tersebut akan dalam kolom 'count'. hal ini bertujuan untuk mengetahui berapa kali buku dibaca oleh user.
+3. Membuat tabel yang berisi jumlah yang membaca sebuah buku oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.value_counts untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung jumlah rating yang diberikan oleh user untuk setiap buku dengan fungsi 'count' dan hasil tersebut akan dalam kolom 'count'. hal ini bertujuan untuk mengetahui berapa kali buku dibaca oleh user.
 
-3. Membuat tabel rata-rata rating pada setiap buku yang ada melalui rata-rata rating yang diberikan oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.groupby untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung rata-rata rating untuk setiap buku dengan fungsi 'mean'. hasilnya akan dalam kolom 'mean'. hal tersebut dilakukan untuk mengetahui rata-rata rating yang didapat untuk setiap buku.
+4. Membuat tabel rata-rata rating pada setiap buku yang ada melalui rata-rata rating yang diberikan oleh user -> proses ini dilakukan dengan menggunakan fungsi pd.groupby untuk mengelompokkan data berdasarkan 'Book-Title' dan menghitung rata-rata rating untuk setiap buku dengan fungsi 'mean'. hasilnya akan dalam kolom 'mean'. hal tersebut dilakukan untuk mengetahui rata-rata rating yang didapat untuk setiap buku. 
 
-4. Mengambil data buku dengan jumlah pembaca di atas 20 dan rata-rata rating di atas 4.5 -> setelah proses ke 3 dan 4 dilakukan akan menhasilkan data frame count dan mean. Dari dataframe tersebut akan digabungkan kembali dengan dataframe merge_df yang telah di gabungkan sebelumnya. karena tujuan awal adalah untuk mengetahui berapa banyak pembaca dari setiapa buku dan rata-rata rating dari setiap buku. kemudian akan di filter data yang jumlah pembaca di atas 20 dan rata-rata rating di atas 4.5 agar data yang kita gunakan data buku yang sudah pernah dibaca dan di rating oleh user untuk memudahkan data digunakan dalam algoritma rekomendasi nantinya. 
+5. Menggabungkan data buku dan rating dengan data jumlah pembaca dan rata-rata rating -> setelah proses tersebut dilakukan kedua tabel tersebut akan digabungkan kembali dengan menggunakan fungsi pd.merge dengan parameter on='Book-Title' dengan variable preparation.
 
-5. Melakukan Filter pada merge_df dengan data preparation yang dihasilkan dari tahapan ke-4 -> setelah pemilihan buku mana saja yang akan digunakan untuk membuat sistem rekomendasi ini pada tahapan ke-4, data yang dihasilkan akan digunakan untuk memfilter dataset merge_df yang telah di gabungkan sebelumnya dengan ketentuan judul, jadi jika judul buku tidak memunuhi kriteria pada tahapan ke-4 maka pada tahapan ke-5 akan tidak digunakan atau hanya menggunakan judul-judul yang ada pada data tahapan ke-4. setelah proses tersebut dihasilkan data dengan nama fix_dfyang dapat digunakan untuk membuat sistem rekomendasi buku adalah sebanyak 21993 baris dan 8 kolom didalamnya dengan kolom sebagai berikut:
+6. Mengambil data buku dengan jumlah pembaca di atas 20 dan rata-rata rating di atas 4.5 -> setelah proses ke 4 dilakukan akan menhasilkan data frame preparation. Dari dataframe tersebut akan digabungkan kembali dengan dataframe merge_df yang telah di gabungkan sebelumnya. karena tujuan awal adalah untuk mengetahui berapa banyak pembaca dari setiapa buku dan rata-rata rating dari setiap buku. kemudian akan di filter data yang jumlah pembaca di atas 20 dan rata-rata rating di atas 4.5 agar data yang kita gunakan data buku yang sudah pernah dibaca dan di rating oleh user untuk memudahkan data digunakan dalam algoritma rekomendasi nantinya. 
+
+7. Melakukan Filter pada merge_df dengan data preparation yang dihasilkan dari tahapan ke-4 -> setelah pemilihan buku mana saja yang akan digunakan untuk membuat sistem rekomendasi ini pada tahapan ke-4, data yang dihasilkan akan digunakan untuk memfilter dataset merge_df yang telah di gabungkan sebelumnya dengan ketentuan judul, jadi jika judul buku tidak memunuhi kriteria pada tahapan ke-4 maka pada tahapan ke-5 akan tidak digunakan atau hanya menggunakan judul-judul yang ada pada data tahapan ke-4. setelah proses tersebut dihasilkan data dengan nama fix_dfyang dapat digunakan untuk membuat sistem rekomendasi buku adalah sebanyak 21993 baris dan 8 kolom didalamnya dengan kolom sebagai berikut:
 - ISBN = Nomor dari setiap buku yang berstandar internasional
 - Book-Title = Judul buku
 - Book-Author = Penulis buku
@@ -127,26 +131,25 @@ Pada bagian data preparation dalam projek ini dilakukan dalam beberapa tahapan, 
 - Image-URL-M = url gambar kedua
 - Image-URL-L = url gambar ketiga
 
-Dari sekian banyak kolom yang dihasilkan,tetapi hanya beberapa kolom saja yang akan digunakan untuk membuat sistem rekomendasi ini yaitu User-ID, Book-Tittle, dan Book-Rating.
+8. drop kolom yang tidak digunakan -> pada tahapan ini dilakukan pemilihan kolom yang akan digunakan untuk membuat sistem rekomendasi buku ini. Dari sekian banyak kolom yang dihasilkan,tetapi dalam projek ini akan digunakan hanya beberapa kolom saja yang akan digunakan untuk membuat sistem rekomendasi ini yaitu User-ID, Book-Tittle, dan Book-Rating. dengan variable yang lainnya akan dihapus dengan menggunakan fungsi drop.
 
-6. Membuat pivot table dari dataframe fix_df -> pada tahapan ini dilakukan pembuatan matrix dengan menggunakan fungsi pd.pivot_table dengan parameter index='Book-Title', columns='User-ID', values='Book-Rating'. yang berarti data akan diubah menjadi bentuk matrix dengan Book-Title sebagai baris, User-ID sebagai kolom, dan Book-Rating sebagai nilai. pada tahapan ini dilakukan agar data dipersiapkan agar dapat diproses oleh algoritma cosine similarity nantinya.
+9. Membuat pivot table dari dataframe fix_df -> pada tahapan ini dilakukan pembuatan matrix dengan menggunakan fungsi pd.pivot_table dengan parameter index='Book-Title', columns='User-ID', values='Book-Rating'. yang berarti data akan diubah menjadi bentuk matrix dengan Book-Title sebagai baris, User-ID sebagai kolom, dan Book-Rating sebagai nilai. pada tahapan ini dilakukan agar data dipersiapkan agar dapat diproses oleh algoritma cosine similarity nantinya.
+
+10. Mempersiapkan data untuk model SVD -> dalam model ini tidak menggunakan data fix_df tetapi hanya menggunakan data merge_df pada tahapan ke-2. dengan hanya menggunakan beberapa variabel yaitu User-ID, Book-Title, dan Book-Rating. hal tersebut dilakukan dengan membaca dataframe dengan bentuk surprise reader dan mengambil beberapa variabel yang akan digunakan untuk membuat sistem rekomendasi buku ini. selanjutnya data tersebut dibagi lagi menjadi data train dan data test dengan perbangan 80:20. dengan variable train dan test.
 
 ## Modeling
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
-
 Terdapat 2 algoritma yang saya gunakan dalam membuat sistem rekomendasi buku ini yaitu cosine similarity dan singular value decomposition (SVD), dengan setiap algoritma memiliki kelebihan dan kekurangannya dalam membuat sistem rekomendasi buku.
 
 1. Cosine Similarity = algoritma ini bekerja dengan menghitung sudut antara 2 vektor yang berbeda, dalam projek ini maka yang digitung adalah kemiripan vektor dari rating yang diterima satu buku dengan buku lainnya dari setiap user. kemiripan vektor ini kemudian dijadikan sebagai input untuk membuat sistem rekomendasi buku ini. kelebihan dari algoritma ini adalah mudah dipahami dan diimplementasikan, tidak terpengaruh oleh skala rating, cocok untuk data sparse dimana data yang digunakan tidak banyak yang kosong atau memberikan rating 0, dan cocok untuk jumlah data dari kecil sampai sedang. namun, kekurangannya adalah kurang efektif untuk data yang ratingnya hanya di sebagian item saja atau sparse, sensitif terhadap outlier, dan dapat menjadi masalah jika data yang digunakan sangat besar.
 
-hasil dari algoritma ini adalah sebagai berikut:
-![Visualisasi Hasil Algoritma Cosine Similarity](image3.png)
+hasil dari algoritma ini adalah sebagai berikut dengan hasil 5 buku yang memiliki kecocokan paling tinggi:
+<img width="766" alt="image3" src="https://github.com/user-attachments/assets/84312bd3-374f-4e1d-85ba-1ca8ccaf4a3e" />
 
 dari hasil diatas terlihat bahwa sistem dapat memberikan rekomendasi buku yang memiliki kemiripan dengan buku yang lainnya, dalam hasil tersebut juga ditampilkan angka kecocokan setiap hasil buku dengan buku yang di inputkan.
 
 2. SVD = algoritma ini bekerja dengan memecah sebuah matrix menjadi 3 komponen yang lebih sederhana, kelebihan dari algoritma ini adalah membantu menyederhanakan dataset yang lebih besar menjadi dataset yang lebih kecil sambil mempertahankan informasi penting yang ada hal ini dapat membantu dalam menangkap hubungan tersembunyi antar data khususnya pada data user dan buku, cocok untuk dataset yang berukuran besar dan dapat menghasilkan hasil akurasi yang tinggi. kekurangan dari algoritma ini adalah kompleksitas yang tinggi, tidak dapat menangani cold start untuk user baru, dan sensitif terhadap parameter.
-
-hasil dari algoritma ini adalah sebagai berikut:
-![Visualisasi Hasil Algoritma SVD](image4.png) 
+hasil dari algoritma ini adalah sebagai berikut dengan hasil 5 buku yang memiliki prediksi paling tinggi:
+<img width="379" alt="image4" src="https://github.com/user-attachments/assets/0c0f9de6-a012-4e86-a112-e4ea1c4520f6" />
 
 hasil diatas menggunakan algoritma svd yang dimana parameter yang digunakan masih default atau bawaan dan belum diubah sama sekali. hasil tersebut menunjukkan rekomendasi yang didapatkan dengan memberikan informasi User-ID yang selanjutnya rekomendasi tersebut keluar dengan nama buku dan prediksi dari ratingnya.
 
