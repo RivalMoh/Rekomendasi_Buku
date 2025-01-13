@@ -1,5 +1,5 @@
 # Laporan Proyek Machine Learning Sistem Rekomendasi berbasis Collaborative Filtering - Rival Moh. Wahyudi
-
+1
 ## Project Overview
 
 Perpustakaan telah menjadi institusi penting dalam menyediakan akses terhadap informasi dan literatur selama berabad-abad. Sebagai pusat penyimpanan buku, manuskrip, dan sumber pengetahuan lainnya, perpustakaan memainkan peran kunci dalam mendukung pendidikan, penelitian, dan pengembangan budaya masyarakat. Namun, seiring berkembangnya teknologi, perpustakaan mengalami transformasi besar-besaran menuju era digital. Perpustakaan digital kini muncul sebagai solusi modern yang menawarkan akses lebih mudah, cepat, dan luas terhadap koleksi literatur, memungkinkan pengguna untuk membaca dan mengunduh buku tanpa harus datang secara fisik ke lokasi perpustakaan.
